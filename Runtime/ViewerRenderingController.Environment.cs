@@ -125,6 +125,15 @@ namespace Deucarian.ViewerRendering
                 return;
             }
 
+            if (_settings != null
+                && (QualitySettings.renderPipeline
+                    == _settings.LightweightPipeline
+                    || QualitySettings.renderPipeline
+                    == _settings.PostProcessingPipeline))
+            {
+                QualitySettings.renderPipeline = _previousPipeline;
+            }
+
             RenderSettings.ambientMode = _previousAmbientMode;
             RenderSettings.ambientLight = _previousAmbientLight;
             RenderSettings.ambientSkyColor = _previousAmbientSky;
@@ -163,15 +172,6 @@ namespace Deucarian.ViewerRendering
             if (_keyLight != null)
             {
                 _keyLight.shadows = _previousKeyLightShadows;
-            }
-
-            if (_settings != null
-                && (QualitySettings.renderPipeline
-                    == _settings.LightweightPipeline
-                    || QualitySettings.renderPipeline
-                    == _settings.PostProcessingPipeline))
-            {
-                QualitySettings.renderPipeline = _previousPipeline;
             }
 
             if (_volume != null)

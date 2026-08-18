@@ -1,0 +1,24 @@
+{
+  "name": "Deucarian.ViewerRendering.Tests.PlayMode",
+  "rootNamespace": "Deucarian.ViewerRendering.Tests.PlayMode",
+  "references": [
+    "Deucarian.Theming",
+    "Deucarian.ViewerRendering",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}

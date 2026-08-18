@@ -98,7 +98,7 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
         }
 
         [Test]
-        public void ExplicitTierSwitchingIsObservableAndLifecycleSafe()
+        public void ExplicitTierSwitchingIsObservable()
         {
             RenderPipelineAsset previousPipeline =
                 QualitySettings.renderPipeline;
@@ -110,7 +110,8 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
                 "Explicit Semantic Quality Light");
             try
             {
-                QualitySettings.renderPipeline = null;
+                ViewerRenderingReferenceCompositionProfile composition =
+                    ViewerRenderingReferenceComposition.Resolve();
                 Camera camera = cameraObject.AddComponent<Camera>();
                 camera.allowHDR = false;
                 UniversalAdditionalCameraData cameraData =
@@ -122,12 +123,11 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
                 light.shadows = LightShadows.Hard;
 
                 ViewerRenderingController controller =
-                    ViewerRenderingReferenceComposition.Resolve()
-                        .Compose(
-                            root.transform,
-                            camera,
-                            light,
-                            null)
+                    composition.Compose(
+                        root.transform,
+                        camera,
+                        light,
+                        null)
                         .Controller;
                 controller.ApplyDisplaySettings(
                     new ViewerDisplaySettingsRequest(
@@ -170,28 +170,14 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
                     Is.EqualTo(
                         ViewerDisplaySettingsChangeSource.QualityChange));
 
-                controller.enabled = false;
-
-                Assert.That(QualitySettings.renderPipeline, Is.Null);
-                Assert.That(camera.allowHDR, Is.False);
-                Assert.That(cameraData.renderPostProcessing, Is.False);
-                Assert.That(
-                    cameraData.antialiasing,
-                    Is.EqualTo(AntialiasingMode.None));
-                Assert.That(light.shadows, Is.EqualTo(LightShadows.Hard));
-
                 controller.ApplyQualityTier(
                     ViewerRenderingQualityTier.Full,
                     ViewerDisplaySettingsChangeSource.QualityChange);
 
+                Assert.That(
+                    controller.ActiveQualityTier,
+                    Is.EqualTo(ViewerRenderingQualityTier.Full));
                 Assert.That(controller.CurrentSettings.EffectsActive, Is.True);
-                Assert.That(QualitySettings.renderPipeline, Is.Null);
-                Assert.That(camera.allowHDR, Is.False);
-                Assert.That(light.shadows, Is.EqualTo(LightShadows.Hard));
-                Assert.That(notifications, Is.EqualTo(2));
-
-                controller.enabled = true;
-
                 Assert.That(
                     QualitySettings.renderPipeline,
                     Is.SameAs(controller.Settings.PostProcessingPipeline));
@@ -204,6 +190,12 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
                         AntialiasingMode
                             .SubpixelMorphologicalAntiAliasing));
                 Assert.That(light.shadows, Is.EqualTo(LightShadows.Soft));
+                Assert.That(notifications, Is.EqualTo(2));
+                Assert.That(observed.EffectsActive, Is.True);
+                Assert.That(
+                    observedSource,
+                    Is.EqualTo(
+                        ViewerDisplaySettingsChangeSource.QualityChange));
 
                 controller.ApplyQualityTier(
                     ViewerRenderingQualityTier.Full,

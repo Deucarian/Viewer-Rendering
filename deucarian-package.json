@@ -14,7 +14,8 @@
     "Deucarian.ViewerRendering.Samples.Bootstrap"
   ],
   "testAssemblies": [
-    "Deucarian.ViewerRendering.Tests.EditMode"
+    "Deucarian.ViewerRendering.Tests.EditMode",
+    "Deucarian.ViewerRendering.Tests.PlayMode"
   ],
   "requiredDependencies": [
     "com.deucarian.common",
