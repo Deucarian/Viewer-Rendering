@@ -281,29 +281,18 @@ namespace Deucarian.ViewerRendering
                 resolvedTheme,
                 DeucarianBuiltinColorRoleIds.Primary,
                 new Color(0.3882353f, 0.25882354f, 0.5882353f, 1f)));
-            bool dark =
-                ResolveThemeMode(resolvedTheme, background)
-                == DeucarianThemeMode.Dark;
-            Color fallbackTop = Opaque(Color.Lerp(
-                background,
-                primary,
-                dark ? 0.14f : 0.08f));
-            Color fallbackHorizon = Opaque(Color.Lerp(
-                background,
-                primary,
-                dark ? 0.06f : 0.03f));
             top = ResolveColor(
                 resolvedTheme,
                 ViewerRenderingColorRoleIds.EnvironmentSkyTop,
-                fallbackTop);
+                profile.ReferenceSkyTop);
             horizon = ResolveColor(
                 resolvedTheme,
                 ViewerRenderingColorRoleIds.EnvironmentSkyHorizon,
-                fallbackHorizon);
+                profile.ReferenceSkyHorizon);
             bottom = ResolveColor(
                 resolvedTheme,
                 ViewerRenderingColorRoleIds.EnvironmentSkyBottom,
-                background);
+                profile.ReferenceSkyBottom);
         }
 
         public static float ResolvePrimaryStrength(
@@ -311,7 +300,7 @@ namespace Deucarian.ViewerRendering
             Color background,
             ViewerRenderingEnvironmentProfile profile)
         {
-            if (HasNearNeutralAuthoredSky(theme, profile))
+            if (HasNearNeutralResolvedSky(theme, profile))
             {
                 return profile.NeutralSkyPrimaryStrength;
             }
@@ -337,25 +326,24 @@ namespace Deucarian.ViewerRendering
             return Opaque(fallback);
         }
 
-        private static bool HasNearNeutralAuthoredSky(
+        private static bool HasNearNeutralResolvedSky(
             DeucarianTheme theme,
             ViewerRenderingEnvironmentProfile profile)
         {
-            if (!TryGetAuthoredColor(
-                    theme,
-                    ViewerRenderingColorRoleIds.EnvironmentSkyTop,
-                    out Color top)
-                || !TryGetAuthoredColor(
-                    theme,
-                    ViewerRenderingColorRoleIds.EnvironmentSkyHorizon,
-                    out Color horizon)
-                || !TryGetAuthoredColor(
-                    theme,
-                    ViewerRenderingColorRoleIds.EnvironmentSkyBottom,
-                    out Color bottom))
-            {
-                return false;
-            }
+            DeucarianTheme resolvedTheme =
+                theme != null ? theme : ResolveFallbackTheme();
+            Color top = ResolveColor(
+                resolvedTheme,
+                ViewerRenderingColorRoleIds.EnvironmentSkyTop,
+                profile.ReferenceSkyTop);
+            Color horizon = ResolveColor(
+                resolvedTheme,
+                ViewerRenderingColorRoleIds.EnvironmentSkyHorizon,
+                profile.ReferenceSkyHorizon);
+            Color bottom = ResolveColor(
+                resolvedTheme,
+                ViewerRenderingColorRoleIds.EnvironmentSkyBottom,
+                profile.ReferenceSkyBottom);
 
             return CalculateSaturation(top)
                        <= profile.NeutralSkySaturationThreshold
@@ -363,17 +351,6 @@ namespace Deucarian.ViewerRendering
                        <= profile.NeutralSkySaturationThreshold
                    && CalculateSaturation(bottom)
                        <= profile.NeutralSkySaturationThreshold;
-        }
-
-        private static bool TryGetAuthoredColor(
-            DeucarianTheme theme,
-            string roleId,
-            out Color color)
-        {
-            color = default;
-            return theme != null
-                   && theme.TryGetColorById(roleId, out color)
-                   && !IsMissingColor(color);
         }
 
         private static bool IsMissingColor(Color color)

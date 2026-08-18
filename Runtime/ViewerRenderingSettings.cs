@@ -14,6 +14,13 @@ namespace Deucarian.ViewerRendering
         public const string ReferencePresetResourcesPath =
             "Deucarian/ViewerRendering/ViewerRenderingReferenceSettings";
 
+        public static readonly Color DefaultReferenceSkyTop =
+            new Color(0.1882353f, 0.1882353f, 0.1882353f, 1f);
+        public static readonly Color DefaultReferenceSkyHorizon =
+            new Color(0.16078432f, 0.16078432f, 0.16078432f, 1f);
+        public static readonly Color DefaultReferenceSkyBottom =
+            new Color(0.1254902f, 0.1254902f, 0.1254902f, 1f);
+
         [Header("Render assets")]
         [SerializeField] private RenderPipelineAsset _lightweightPipeline;
         [SerializeField] private RenderPipelineAsset _postProcessingPipeline;
@@ -51,6 +58,12 @@ namespace Deucarian.ViewerRendering
         [SerializeField] private float _realisticAmbientSkySrgb = 0.68f;
         [SerializeField] private float _realisticAmbientEquatorSrgb = 0.52f;
         [SerializeField] private float _realisticAmbientGroundSrgb = 0.38f;
+        [SerializeField] private Color _referenceSkyTop =
+            new Color(0.1882353f, 0.1882353f, 0.1882353f, 1f);
+        [SerializeField] private Color _referenceSkyHorizon =
+            new Color(0.16078432f, 0.16078432f, 0.16078432f, 1f);
+        [SerializeField] private Color _referenceSkyBottom =
+            new Color(0.1254902f, 0.1254902f, 0.1254902f, 1f);
         [SerializeField] private float _darkThemePrimaryStrength = 0.12f;
         [SerializeField] private float _lightThemePrimaryStrength = 0.06f;
         [SerializeField] private float _neutralSkyPrimaryStrength;
@@ -99,6 +112,9 @@ namespace Deucarian.ViewerRendering
             _realisticAmbientEquatorSrgb;
         public float RealisticAmbientGroundSrgb =>
             _realisticAmbientGroundSrgb;
+        public Color ReferenceSkyTop => _referenceSkyTop;
+        public Color ReferenceSkyHorizon => _referenceSkyHorizon;
+        public Color ReferenceSkyBottom => _referenceSkyBottom;
         public float DarkThemePrimaryStrength =>
             _darkThemePrimaryStrength;
         public float LightThemePrimaryStrength =>

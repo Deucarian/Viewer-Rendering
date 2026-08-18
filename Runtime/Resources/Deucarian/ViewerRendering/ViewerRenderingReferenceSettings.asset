@@ -37,6 +37,9 @@ MonoBehaviour:
   _realisticAmbientSkySrgb: 0.68
   _realisticAmbientEquatorSrgb: 0.52
   _realisticAmbientGroundSrgb: 0.38
+  _referenceSkyTop: {r: 0.1882353, g: 0.1882353, b: 0.1882353, a: 1}
+  _referenceSkyHorizon: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
+  _referenceSkyBottom: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
   _darkThemePrimaryStrength: 0.12
   _lightThemePrimaryStrength: 0.06
   _neutralSkyPrimaryStrength: 0

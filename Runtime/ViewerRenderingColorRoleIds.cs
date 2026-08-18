@@ -2,7 +2,7 @@ namespace Deucarian.ViewerRendering
 {
     /// <summary>
     /// Optional generic theme roles for an authored viewer environment.
-    /// Reference themes without these roles use a restrained derived gradient.
+    /// Themes without these roles use the package-owned neutral studio sky.
     /// </summary>
     public static class ViewerRenderingColorRoleIds
     {

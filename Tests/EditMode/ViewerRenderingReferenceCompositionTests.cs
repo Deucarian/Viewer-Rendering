@@ -83,6 +83,15 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
             Assert.That(
                 environment.RealisticAmbientGroundSrgb,
                 Is.EqualTo(0.38f));
+            AssertColor(
+                new Color(0.1882353f, 0.1882353f, 0.1882353f, 1f),
+                environment.ReferenceSkyTop);
+            AssertColor(
+                new Color(0.16078432f, 0.16078432f, 0.16078432f, 1f),
+                environment.ReferenceSkyHorizon);
+            AssertColor(
+                new Color(0.1254902f, 0.1254902f, 0.1254902f, 1f),
+                environment.ReferenceSkyBottom);
             Assert.That(
                 environment.DarkThemePrimaryStrength,
                 Is.EqualTo(0.12f));
@@ -421,7 +430,7 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
         }
 
         [Test]
-        public void NeutralReflectionAndThemeFallbackStayColorNeutral()
+        public void NeutralReflectionAndReferenceSkyStayColorNeutral()
         {
             ViewerRenderingReferenceCompositionProfile composition =
                 ViewerRenderingReferenceComposition.Resolve();
@@ -455,31 +464,112 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
                         Is.EqualTo(color.b).Within(0.000001f));
                 }
 
-                ViewerThemedEnvironment.ResolveGradientColors(
-                    composition.ThemeProfile.DarkTheme,
-                    composition.EnvironmentProfile,
-                    out Color top,
-                    out Color horizon,
-                    out Color bottom,
-                    out Color primary,
-                    out Color background);
-                AssertColor(
-                    Color.Lerp(background, primary, 0.14f),
-                    top);
-                AssertColor(
-                    Color.Lerp(background, primary, 0.06f),
-                    horizon);
-                AssertColor(background, bottom);
-                Assert.That(
-                    ViewerThemedEnvironment.ResolvePrimaryStrength(
-                        composition.ThemeProfile.DarkTheme,
-                        background,
-                        composition.EnvironmentProfile),
-                    Is.EqualTo(0.12f));
+                foreach (DeucarianTheme referenceTheme in new[]
+                         {
+                             composition.ThemeProfile.DarkTheme,
+                             composition.ThemeProfile.LightTheme
+                         })
+                {
+                    ViewerThemedEnvironment.ResolveGradientColors(
+                        referenceTheme,
+                        composition.EnvironmentProfile,
+                        out Color top,
+                        out Color horizon,
+                        out Color bottom,
+                        out _,
+                        out Color background);
+                    AssertColor(
+                        ViewerRenderingSettings.DefaultReferenceSkyTop,
+                        top);
+                    AssertColor(
+                        ViewerRenderingSettings.DefaultReferenceSkyHorizon,
+                        horizon);
+                    AssertColor(
+                        ViewerRenderingSettings.DefaultReferenceSkyBottom,
+                        bottom);
+                    Assert.That(
+                        ViewerThemedEnvironment.ResolvePrimaryStrength(
+                            referenceTheme,
+                            background,
+                            composition.EnvironmentProfile),
+                        Is.EqualTo(0f));
+                }
             }
             finally
             {
                 Object.DestroyImmediate(fallback);
+            }
+        }
+
+        [Test]
+        public void GenericAuthoredSkyRolesOverrideCanonicalReferenceSky()
+        {
+            DeucarianColorRoleLibrary library =
+                ScriptableObject.CreateInstance<DeucarianColorRoleLibrary>();
+            DeucarianColorRole topRole = CreateColorRole(
+                ViewerRenderingColorRoleIds.EnvironmentSkyTop,
+                "Environment Sky Top");
+            DeucarianColorRole horizonRole = CreateColorRole(
+                ViewerRenderingColorRoleIds.EnvironmentSkyHorizon,
+                "Environment Sky Horizon");
+            DeucarianColorRole bottomRole = CreateColorRole(
+                ViewerRenderingColorRoleIds.EnvironmentSkyBottom,
+                "Environment Sky Bottom");
+            DeucarianColorPalette palette =
+                ScriptableObject.CreateInstance<DeucarianColorPalette>();
+            DeucarianTheme theme =
+                ScriptableObject.CreateInstance<DeucarianTheme>();
+            Color authoredTop = new Color(0.24f, 0.12f, 0.42f, 1f);
+            Color authoredHorizon = new Color(0.14f, 0.22f, 0.38f, 1f);
+            Color authoredBottom = new Color(0.05f, 0.07f, 0.12f, 1f);
+            try
+            {
+                library.AddRole(topRole);
+                library.AddRole(horizonRole);
+                library.AddRole(bottomRole);
+                palette.Configure(
+                    "deucarian.palette.viewer-rendering-test.dark",
+                    "Viewer Rendering Test Dark",
+                    library,
+                    DeucarianThemeMode.Dark);
+                palette.SetColor(topRole, authoredTop);
+                palette.SetColor(horizonRole, authoredHorizon);
+                palette.SetColor(bottomRole, authoredBottom);
+                theme.Configure(
+                    "deucarian.theme.viewer-rendering-test.dark",
+                    "Viewer Rendering Test Dark",
+                    palette);
+
+                ViewerRenderingEnvironmentProfile environment =
+                    ViewerRenderingReferenceComposition.Resolve()
+                        .EnvironmentProfile;
+                ViewerThemedEnvironment.ResolveGradientColors(
+                    theme,
+                    environment,
+                    out Color top,
+                    out Color horizon,
+                    out Color bottom,
+                    out _,
+                    out Color background);
+
+                AssertColor(authoredTop, top);
+                AssertColor(authoredHorizon, horizon);
+                AssertColor(authoredBottom, bottom);
+                Assert.That(
+                    ViewerThemedEnvironment.ResolvePrimaryStrength(
+                        theme,
+                        background,
+                        environment),
+                    Is.EqualTo(environment.DarkThemePrimaryStrength));
+            }
+            finally
+            {
+                Object.DestroyImmediate(theme);
+                Object.DestroyImmediate(palette);
+                Object.DestroyImmediate(bottomRole);
+                Object.DestroyImmediate(horizonRole);
+                Object.DestroyImmediate(topRole);
+                Object.DestroyImmediate(library);
             }
         }
 
@@ -584,6 +674,22 @@ namespace Deucarian.ViewerRendering.Tests.EditMode
             Assert.That(
                 actual.a,
                 Is.EqualTo(expected.a).Within(0.000001f));
+        }
+
+        private static DeucarianColorRole CreateColorRole(
+            string id,
+            string displayName)
+        {
+            DeucarianColorRole role =
+                ScriptableObject.CreateInstance<DeucarianColorRole>();
+            role.Configure(
+                id,
+                displayName,
+                "Viewer Environment",
+                "Optional authored viewer sky color.",
+                Color.black,
+                false);
+            return role;
         }
     }
 }

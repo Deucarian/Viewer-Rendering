@@ -131,6 +131,37 @@ namespace Deucarian.ViewerRendering
             float lightThemePrimaryStrength,
             float neutralSkyPrimaryStrength,
             float neutralSkySaturationThreshold)
+            : this(
+                reflectionCubemapSize,
+                reflectionIntensity,
+                colorFaithfulAmbientSrgb,
+                realisticAmbientSkySrgb,
+                realisticAmbientEquatorSrgb,
+                realisticAmbientGroundSrgb,
+                ViewerRenderingSettings.DefaultReferenceSkyTop,
+                ViewerRenderingSettings.DefaultReferenceSkyHorizon,
+                ViewerRenderingSettings.DefaultReferenceSkyBottom,
+                darkThemePrimaryStrength,
+                lightThemePrimaryStrength,
+                neutralSkyPrimaryStrength,
+                neutralSkySaturationThreshold)
+        {
+        }
+
+        public ViewerRenderingEnvironmentProfile(
+            int reflectionCubemapSize,
+            float reflectionIntensity,
+            float colorFaithfulAmbientSrgb,
+            float realisticAmbientSkySrgb,
+            float realisticAmbientEquatorSrgb,
+            float realisticAmbientGroundSrgb,
+            Color referenceSkyTop,
+            Color referenceSkyHorizon,
+            Color referenceSkyBottom,
+            float darkThemePrimaryStrength,
+            float lightThemePrimaryStrength,
+            float neutralSkyPrimaryStrength,
+            float neutralSkySaturationThreshold)
         {
             ReflectionCubemapSize = reflectionCubemapSize;
             ReflectionIntensity = reflectionIntensity;
@@ -138,6 +169,9 @@ namespace Deucarian.ViewerRendering
             RealisticAmbientSkySrgb = realisticAmbientSkySrgb;
             RealisticAmbientEquatorSrgb = realisticAmbientEquatorSrgb;
             RealisticAmbientGroundSrgb = realisticAmbientGroundSrgb;
+            ReferenceSkyTop = referenceSkyTop;
+            ReferenceSkyHorizon = referenceSkyHorizon;
+            ReferenceSkyBottom = referenceSkyBottom;
             DarkThemePrimaryStrength = darkThemePrimaryStrength;
             LightThemePrimaryStrength = lightThemePrimaryStrength;
             NeutralSkyPrimaryStrength = neutralSkyPrimaryStrength;
@@ -150,6 +184,9 @@ namespace Deucarian.ViewerRendering
         public float RealisticAmbientSkySrgb { get; }
         public float RealisticAmbientEquatorSrgb { get; }
         public float RealisticAmbientGroundSrgb { get; }
+        public Color ReferenceSkyTop { get; }
+        public Color ReferenceSkyHorizon { get; }
+        public Color ReferenceSkyBottom { get; }
         public float DarkThemePrimaryStrength { get; }
         public float LightThemePrimaryStrength { get; }
         public float NeutralSkyPrimaryStrength { get; }
@@ -167,6 +204,9 @@ namespace Deucarian.ViewerRendering
                        other.RealisticAmbientEquatorSrgb)
                    && RealisticAmbientGroundSrgb.Equals(
                        other.RealisticAmbientGroundSrgb)
+                   && ReferenceSkyTop.Equals(other.ReferenceSkyTop)
+                   && ReferenceSkyHorizon.Equals(other.ReferenceSkyHorizon)
+                   && ReferenceSkyBottom.Equals(other.ReferenceSkyBottom)
                    && DarkThemePrimaryStrength.Equals(
                        other.DarkThemePrimaryStrength)
                    && LightThemePrimaryStrength.Equals(
@@ -186,7 +226,10 @@ namespace Deucarian.ViewerRendering
             unchecked
             {
                 return (ReflectionCubemapSize * 397)
-                       ^ ReflectionIntensity.GetHashCode();
+                       ^ ReflectionIntensity.GetHashCode()
+                       ^ ReferenceSkyTop.GetHashCode()
+                       ^ ReferenceSkyHorizon.GetHashCode()
+                       ^ ReferenceSkyBottom.GetHashCode();
             }
         }
     }

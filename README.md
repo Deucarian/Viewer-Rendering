@@ -70,10 +70,11 @@ markers and model semantics remain consumer-owned.
 ## Theme integration
 
 The package consumes `DeucarianViewerReferenceThemePreset` from
-`com.deucarian.theming`. Background and primary colors drive the restrained
-gradient fallback. A custom theme may optionally author the generic environment
-roles exposed by `ViewerRenderingColorRoleIds`; no product-specific role IDs
-are used.
+`com.deucarian.theming`. The reference composition supplies a neutral studio
+sky (`#303030` top, `#292929` horizon, and `#202020` bottom) independently from
+the UI accent palette. A custom theme may optionally author the generic
+environment roles exposed by `ViewerRenderingColorRoleIds`; those values take
+precedence, and no product-specific role IDs are used.
 
 ## Asset ownership
 
@@ -90,8 +91,8 @@ which both copies are installed.
 EditMode tests cover the resolved reference values, semantic quality and shadow
 policy, independence from consumer Unity quality indices, explicit tier
 switching and lifecycle restoration, asset graph, composition idempotency,
-camera/light setup, display notifications, neutral reflection fallback, and
-theme-derived gradient behavior. An architecture assertion prevents runtime
+camera/light setup, display notifications, the neutral reference environment,
+and generic authored-sky overrides. An architecture assertion prevents runtime
 code from reintroducing `QualitySettings.GetQualityLevel` coupling.
 
 Run the shared package validator before publication:
