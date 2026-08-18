@@ -1,0 +1,16 @@
+{
+  "name": "Deucarian.ViewerRendering.Samples.Bootstrap",
+  "rootNamespace": "Deucarian.ViewerRendering.Samples.Bootstrap",
+  "references": [
+    "Deucarian.ViewerRendering"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

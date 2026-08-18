@@ -1,0 +1,21 @@
+{
+  "name": "Deucarian.ViewerRendering",
+  "rootNamespace": "Deucarian.ViewerRendering",
+  "references": [
+    "Deucarian.Common",
+    "Deucarian.Diagnostics",
+    "Deucarian.Logging",
+    "Deucarian.Theming",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

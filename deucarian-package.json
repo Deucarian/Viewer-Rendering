@@ -1,0 +1,30 @@
+{
+  "packageId": "com.deucarian.viewer-rendering",
+  "displayName": "Deucarian Viewer Rendering",
+  "samplePolicy": "compiled-example",
+  "operationalPackage": true,
+  "ownedCapabilities": [
+    "viewer-rendering-environment"
+  ],
+  "runtimeAssemblies": [
+    "Deucarian.ViewerRendering"
+  ],
+  "editorAssemblies": [],
+  "sampleAssemblies": [
+    "Deucarian.ViewerRendering.Samples.Bootstrap"
+  ],
+  "testAssemblies": [
+    "Deucarian.ViewerRendering.Tests.EditMode"
+  ],
+  "requiredDependencies": [
+    "com.deucarian.common",
+    "com.deucarian.diagnostics",
+    "com.deucarian.logging",
+    "com.deucarian.theming",
+    "com.unity.render-pipelines.universal"
+  ],
+  "optionalVersionDefinedDependencies": [],
+  "allowedDirectDebugCalls": [],
+  "allowedDirectUnityObjectLifetimeCalls": [],
+  "expectedSamplesRoot": "Samples~"
+}

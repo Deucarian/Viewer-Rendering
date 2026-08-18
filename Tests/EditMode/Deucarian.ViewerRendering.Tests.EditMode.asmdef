@@ -1,0 +1,26 @@
+{
+  "name": "Deucarian.ViewerRendering.Tests.EditMode",
+  "rootNamespace": "Deucarian.ViewerRendering.Tests.EditMode",
+  "references": [
+    "Deucarian.Theming",
+    "Deucarian.ViewerRendering",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}
