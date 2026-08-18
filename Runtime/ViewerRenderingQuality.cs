@@ -93,4 +93,3 @@ namespace Deucarian.ViewerRendering
             ViewerDisplaySettingsChangeSource source);
     }
 }
-
