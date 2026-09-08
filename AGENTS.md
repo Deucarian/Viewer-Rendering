@@ -2,8 +2,7 @@
 
 Package ID: `com.deucarian.viewer-rendering`
 
-Follow the canonical Deucarian architecture standard in
-`C:/Repositories/Package-Registry/ARCHITECTURE.md`.
+Follow the [canonical Deucarian architecture standard](https://github.com/Deucarian/Package-Registry/blob/main/ARCHITECTURE.md).
 
 ## Ownership
 
