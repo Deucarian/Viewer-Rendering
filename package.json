@@ -1,6 +1,6 @@
 {
   "name": "com.deucarian.viewer-rendering",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Deucarian Viewer Rendering",
   "description": "Reusable reference viewer rendering, camera, lighting, post-processing, reflection, and themed environment composition.",
   "unity": "6000.0",
