@@ -2,6 +2,16 @@
 
 All notable changes to this package are documented in this file.
 
+## [0.1.1] - 2026-09-14
+
+### Fixed
+
+- Preserve post-processing shader variants for package-owned volume profiles.
+  URP 17.3 discovers used volume effects only in `Assets/`, so its unused
+  post-processing filter removed Bloom needed by the packaged Realistic mode.
+  General unused shader stripping remains enabled. Consumers keep the same
+  canonical profiles and do not need duplicate assets or runtime workarounds.
+
 ## [0.1.0] - 2026-08-18
 
 ### Added
