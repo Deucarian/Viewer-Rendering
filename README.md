@@ -5,7 +5,7 @@
 neutral ambient/reflection environment, post-processing profiles, and themed
 gradient sky.
 
-Current package version: `0.1.0`. Unity `6000.0` or newer is required because
+Current package version: `0.1.1`. Unity `6000.0` or newer is required because
 the packaged render-pipeline assets target URP `17.3.0`.
 
 ## Reference composition
